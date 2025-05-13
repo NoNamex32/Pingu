@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feliz Cumpleaños, mi Pingüinita</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Quicksand', sans-serif;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ffe0f0, #e0f7ff);
+      position: relative;
+    }
+
+    .background-bubbles {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -150px;
+      background: rgba(255, 182, 193, 0.4);
+      border-radius: 50%;
+      animation: rise 20s infinite ease-in;
+      filter: drop-shadow(0 0 5px #ff69b4);
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.5;
+      }
+      50% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    .gift-wrapper {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: linear-gradient(135deg, #ffc0cb, #ff69b4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      flex-direction: column;
+      perspective: 1000px;
+      user-select: none;
+    }
+
+    .gift-box {
+      width: 220px;
+      height: 220px;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    .box-body {
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      border: 5px solid #ff4081;
+      border-radius: 25px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+
+    .box-lid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ff4081;
+      border-radius: 25px;
+      transform-origin: bottom;
+      transition: transform 1s ease-in-out;
+      z-index: 2;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .gift-wrapper.open .box-lid {
+      transform: rotateX(-140deg);
+    }
+
+    .ribbon-horizontal, .ribbon-vertical {
+      position: absolute;
+      background: #fff;
+    }
+
+    .ribbon-horizontal {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 15px;
+      transform: translateY(-50%);
+      border-radius: 10px;
+    }
+
+    .ribbon-vertical {
+      left: 50%;
+      top: 0;
+      width: 15px;
+      height: 100%;
+      transform: translateX(-50%);
+      border-radius: 10px;
+    }
+
+    .gift-text {
+      color: white;
+      font-size: 1.5em;
+      text-align: center;
+      margin-top: 20px;
+      animation: pulse 2s infinite;
+      text-shadow: 1px 1px 3px #ff69b4;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+
+    .gift-wrapper.hidden {
+      animation: fadeOut 1s ease forwards;
+      pointer-events: none;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: scale(1.2); pointer-events: none; }
+    }
+
+    .container {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 1.5s ease, transform 1.5s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 30px;
+      pointer-events: none;
+    }
+
+    .container.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .content-box {
+      background: #ffffffd8;
+      border-radius: 40px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      max-width: 650px;
+      border: 4px dashed #ffb6c1;
+      position: relative;
+      z-index: 10;
+      user-select: none;
+    }
+
+    .content-box h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.8em;
+      color: #ff4081;
+      margin-bottom: 15px;
+      text-shadow: 0 0 8px #ff69b4;
+    }
+
+    .content-box p {
+      font-size: 1.3em;
+      color: #555;
+      margin: 10px 0;
+    }
+
+    .image-container {
+      position: relative;
+      margin-top: 20px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .image-container img {
+      width: 270px;
+      border-radius: 25px;
+      transition: opacity 0.6s ease;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      user-select: none;
+    }
+
+    .image-container img.fade-out {
+      opacity: 0;
+    }
+
+    .hearts {
+      font-size: 2em;
+      color: #ff5ea4;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: floatHearts 2s infinite ease-in-out;
+      user-select: none;
+      pointer-events: none;
+      text-shadow: 0 0 5px #ff5ea4;
+    }
+
+    @keyframes floatHearts {
+      0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      100% { transform: translateX(-50%) translateY(-30px); opacity: 0; }
+    }
+
+    #mensajeImagen {
+      margin-top: 12px;
+      font-size: 1.1em;
+      color: #ff4081;
+      font-weight: 600;
+      font-style: italic;
+      user-select: none;
+      text-shadow: 0 0 5px #ff69b4;
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 1em;
+      color: #777;
+      user-select: none;
+    }
+
+    #confetti {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 200;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-bubbles"></div>
+
+  <div class="gift-wrapper" onclick="abrirRegalo()" title="Abreme">
+    <div class="gift-box">
+      <div class="box-lid">
+        <div class="ribbon-horizontal"></div>
+        <div class="ribbon-vertical"></div>
+      </div>
+      <div class="box-body"></div>
+    </div>
+    <div class="gift-text">Abrime Bobi</div>
+  </div>
+
+  <div class="container" id="contenido">
+    <div class="content-box">
+      <h1>Feliz Cumpleaños, mi Pinguinita 🐧</h1>
+      <p>Hoy es el dia en el que nacio el Amor de mi Vida </p>
+      <div class="image-container" onclick="cambiarImagen()" title="Haz clic en nosotros para descubrir una sorpresa especial">
+        <div class="hearts">♥ ♥ ♥</div>
+        <img id="penguinImage" src="/storage/emulated/0/Download/djldcv1wi7o81.jpg" alt="Pingüinitos abrazados" draggable="false" />
+        <p id="mensajeImagen">Nosotros como Pinguinitos</p>
+      </div>
+      <footer>- ᴛᴇ ᴀᴍᴏᴏᴏᴏ ᴘᴀᴏᴏᴏᴏᴏ </footer>
+    </div>
+  </div>
+
+  <canvas id="confetti"></canvas>
+
+  <script>
+    window.onload = () => {
+      const bubbles = document.querySelector('.background-bubbles');
+      for (let i = 0; i < 25; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        const size = Math.random() * 40 + 20;
+        bubble.style.width = bubble.style.height = size + 'px';
+        bubble.style.left = Math.random() * 100 + '%';
+        bubble.style.animationDelay = (Math.random() * 20) + 's';
+        bubble.style.animationDuration = (15 + Math.random() * 10) + 's';
+        bubbles.appendChild(bubble);
+      }
+    };
+
+    const imagenes = [
+      {src: "/storage/emulated/0/Download/djldcv1wi7o81.jpg", msg: "Nosotros como Pinguinitos"},
+      {src: "/storage/emulated/0/Download/IMG-20240923-WA0046~2.jpg", msg: "Tu y Yo pero Fuchis jsjs."}
+    ];
+    let idx = 0;
+
+    function abrirRegalo() {
+      const wrapper = document.querySelector('.gift-wrapper');
+      wrapper.classList.add('open');
+      setTimeout(() => {
+        wrapper.classList.add('hidden');
+        document.getElementById('contenido').classList.add('active');
+        lanzarConfeti();
+      }, 1500);
+    }
+
+    function cambiarImagen() {
+      const imagen = document.getElementById("penguinImage");
+      const mensaje = document.getElementById("mensajeImagen");
+      imagen.classList.add("fade-out");
+      setTimeout(() => {
+        idx = (idx + 1) % imagenes.length;
+        imagen.src = imagenes[idx].src;
+        mensaje.textContent = imagenes[idx].msg;
+        imagen.classList.remove("fade-out");
+      }, 600);
+    }
+
+    function lanzarConfeti() {
+      const canvas = document.getElementById('confetti');
+      canvas.style.display = 'block';
+      if (!window.confetti) {
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js";
+        script.onload = () => { dispararConfeti(); };
+        document.body.appendChild(script);
+      } else {
+        dispararConfeti();
+      }
+
+      function dispararConfeti() {
+        const duration = 5000;
+        const end = Date.now() + duration;
+        (function frame() {
+          confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+          confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          } else {
+            canvas.style.display = 'none';
+          }
+        })();
+      }
+    }
+  </script>
+</body>
+</html>
